@@ -1,0 +1,37 @@
+import pandas as pd
+import io
+
+def _ler_tabela(caminho):
+    path = caminho
+    tabela = pd.read_excel(path)
+    return tabela
+
+def _concatenar_tabelas(tabela_1, tabela_2):
+    tabela_agrupada = pd.concat([tabela_1, tabela_2])
+    return tabela_agrupada
+
+def _remover_duplicatas(tabela_agrupada):
+    df = tabela_agrupada.value_counts()
+    df = tabela_agrupada.drop_duplicates()
+    df = tabela_agrupada.drop_duplicates(subset = ['N° DA COLETA', 'COLETOR'], keep='first')
+    df = tabela_agrupada.drop_duplicates(subset = ['N° DA COLETA', 'DE: '], keep='first')
+    return df
+
+def _exportar_resultado(tabela, tabela_final, tabela_duplicatas):
+    tabela.to_excel("dadosagrupados.xlsx", index=False, encoding='latin1')
+    tabela_final.to_excel("tabelafiltrada.xlsx", index=False, encoding='latin1')
+    tabela_duplicatas.to_excel("duplicatas.xlsx", index=False, encoding='latin1')
+
+def mostrar_tabela(tabela):
+    display(tabela)
+
+def detalhes_tabela(tabela):
+    n_colunas = tabela.shape()
+    
+#gerar tabela com duplicatas
+#fazer um display com as informações
+
+
+
+
+
