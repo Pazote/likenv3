@@ -30,7 +30,7 @@ def _montar_caminho(path, name):
     caminho = (path.get())
     caminho_com_nome = caminho + f"/{name}.xlsx"
     return caminho_com_nome
-    
+       
 def rodando(path_1, path_2, path_save):
     df_1 = pd.read_excel(path_1.get())
     df_2 = pd.read_excel(path_2.get())
