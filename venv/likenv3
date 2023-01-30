@@ -16,11 +16,19 @@ def concatenar_tabelas(tabela_1, tabela_2):
 
 def remover_duplicatas(tabela_agrupada):
     df = tabela_agrupada.value_counts()
-    df = tabela_agrupada.drop_duplicates()
-    df = tabela_agrupada.drop_duplicates(subset = ['N° DA COLETA', 'COLETOR'], keep='first')
-    df = tabela_agrupada.drop_duplicates(subset = ['N° DA COLETA', 'DE: '], keep='first')
-    df_dropped = tabela_agrupada.loc[~tabela_agrupada.index.isin(df.index)]
-    return df, df_dropped
+    df2 = df.drop_duplicates()
+    df3 = df2.drop_duplicates(subset = ['N° DA COLETA', 'COLETOR'], keep='first')
+    df4 = df3.drop_duplicates(subset = ['N° DA COLETA', 'DE: '], keep='first')
+    return df4
+
+def encontrar_duplicatas(tabela_agrupada):
+    df = tabela_agrupada.value_counts()
+    df2 = df.drop_duplicates()
+    df3 = df2.drop_duplicates(subset = ['N° DA COLETA', 'COLETOR'], keep='first')
+    df4 = df3.drop_duplicates(subset = ['N° DA COLETA', 'DE: '], keep='first')
+    df_dropped = tabela_agrupada.loc[~tabela_agrupada.index.isin(df4.index)]
+    return df_dropped
+
 
 def _exportar_tabela(tabela_exportar, path_save, name):
     path = _montar_caminho(path_save, name)
@@ -31,13 +39,14 @@ def _montar_caminho(path, name):
     caminho = (path.get())
     caminho_com_nome = caminho + f"/{name}.xlsx"
     return caminho_com_nome
-       
+    
 def rodando(path_1, path_2, path_save):
     df_1 = pd.read_excel(path_1.get())
     df_2 = pd.read_excel(path_2.get())
     tabela_duplicada = concatenar_tabelas(df_1, df_2)
     _exportar_tabela(tabela_duplicada, path_save, "tabela_agrupada")
-    tabela_filtrada, tabela_duplicatas = remover_duplicatas(tabela_duplicada)
+    tabela_filtrada = remover_duplicatas(tabela_duplicada)
+    tabela_duplicatas = encontrar_duplicatas(tabela_duplicada)
     _exportar_tabela(tabela_filtrada, path_save, "tabela_filtrada")
     _exportar_tabela(tabela_duplicatas, path_save, "tabela duplicatas")
 
