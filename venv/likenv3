@@ -21,6 +21,11 @@ def remover_duplicatas(tabela_agrupada):
     df = tabela_agrupada.drop_duplicates(subset = ['N° DA COLETA', 'DE: '], keep='first')
     return df
 
+def encontrar_duplicatas(tabela_filtrada, tabela_duplicada):
+    df_dropped = tabela_duplicada.loc[~tabela_duplicada.index.isin(tabela_filtrada.index)]
+    return df_dropped
+
+
 def _exportar_tabela(tabela_exportar, path_save, name):
     path = _montar_caminho(path_save, name)
     tabela_exportar.to_excel(path, index=False, encoding='latin1')
@@ -38,6 +43,8 @@ def rodando(path_1, path_2, path_save):
     _exportar_tabela(tabela_duplicada, path_save, "tabela_agrupada")
     tabela_filtrada = remover_duplicatas(tabela_duplicada)
     _exportar_tabela(tabela_filtrada, path_save, "tabela_filtrada")
+    tabela_duplicatas = encontrar_duplicatas(tabela_filtrada, tabela_duplicada)
+    _exportar_tabela(tabela_duplicatas, path_save, "tabela duplicatas")
 
 def selecionar_pasta_salvamento():
     path_salvar = filedialog.askdirectory()
